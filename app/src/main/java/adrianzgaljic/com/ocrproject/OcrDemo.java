@@ -1,8 +1,14 @@
 package adrianzgaljic.com.ocrproject;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
@@ -15,6 +21,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 
+import org.opencv.android.Utils;
+import org.opencv.core.CvException;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
+import adrianzgaljic.com.ocr.Detector;
 
 
 public class OcrDemo extends Activity {
@@ -34,31 +46,27 @@ public class OcrDemo extends Activity {
     private CameraPreview preview;
     private static Camera.Size size;
 
-    static{
-        System.loadLibrary("opencv_java3");
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ocr_demo);
-        //Detector.init(this, true);
-        //Detector.setImageFliped(true );
-        //Detector.setCertainty(40);
+        Detector.init(this, true);
+        Detector.setImageFliped(true );
+        Detector.setCertainty(40);
 
 
 
         // Create an instance of Camera
         camera = getCameraInstance();
-        Log.d("tag","mcamera = "+ camera);
+        Log.d("tag","camera = "+ camera);
         // Create our Preview view and set it as the content of our activity.
         preview = new CameraPreview(this, camera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        FrameLayout preview = findViewById(R.id.camera_preview);
         preview.addView(this.preview);
 
 
-        Button captureButton = (Button) findViewById(R.id.button_capture);
+        Button captureButton = findViewById(R.id.button_capture);
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -127,7 +135,7 @@ public class OcrDemo extends Activity {
             c = Camera.open(); // attempt to get a Camera instance
         }
         catch (Exception e){
-            Log.d("tag","camera erro "+ e.toString());
+            Log.d("tag","camera error "+ e.toString());
             // Camera is not available (in use or does not exist)
         }
         c.setDisplayOrientation(90);
@@ -138,7 +146,7 @@ public class OcrDemo extends Activity {
         params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
         params.setPreviewSize(size.width, size.height);
         c.setParameters(params);
-        return c; // returns null if camera is unavailable
+        return c;
     }
 
 
@@ -149,54 +157,20 @@ public class OcrDemo extends Activity {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
 
-            Camera.Parameters parameters = camera.getParameters();
-            int width = parameters.getPreviewSize().width;
-            int height = parameters.getPreviewSize().height;
-/*
-            Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length, null);
-            Map<Point, String> result = Detector.detect(bm);
+            Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length, null);
+            /*Bitmap bm = BitmapFactory.decodeResource(OcrDemo.this.getResources(),
+                    R.drawable.dva);
+                    */
+            //Bitmap b = rotateBitmap(bm, 90);
+            Map<Point, String> result = Detector.detect(b);
             Map<Point, Double> res2 = Detector.getNumbers(result);
             System.out.println(res2);
-
-            */
-     /*       try {
-                FileOutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().getAbsolutePath()+"/s0_50.jpg");
-                bm.compress(Bitmap.CompressFormat.JPEG, 95, out);
-                out.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            */
-
-/*
-            for (int i=1; i<20; i++){
-                String fileName = "d_"+Integer.toString(i);
-                Bitmap bm = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                        //R.drawable.a_1
-                        getApplicationContext().getResources().getIdentifier(fileName,"drawable", getPackageName())
-                );
-                Log.d("bitmap", "bmp= "+bm);
-                //storeImage(bm," sliks");
-                Map<Point, String> result = Detector.detect(bm, i);
-                Log.d("bitmap", "result= "+result);
-
-            }
-
-*/
-
-
-
-            //String  rez = Detector.detectFromContour(bm);
-
-
-
-
+            Bitmap newBm = drawTextToBitmap(b, OcrDemo.this , res2);
+            storeImage(newBm, "ime");
 
         }
     };
-/*
+
     public static Bitmap matToBitmap(Mat mat){
         Mat tmp = new Mat(mat.height(), mat.width(), CvType.CV_8U, new Scalar(4));
         Bitmap bmp = null;
@@ -220,13 +194,13 @@ public class OcrDemo extends Activity {
     }
 
     public Mat bitmapToMat(Bitmap bp){
-        Mat tmp = new Mat (bp.getWidth(), bp.getHeight(), CvType.CV_8UC1);
+        Mat tmp = new Mat(bp.getWidth(), bp.getHeight(), CvType.CV_8UC1);
         //Bitmap bmp32 = bmpGallery.copy(Bitmap.Config.ARGB_8888, true);
         //Utils.bitmapToMat(bmp32, imgMAT);
         return tmp;
 
     }
-    */
+
 
     public static void storeImage(Bitmap bitmap, String name){
         File sdCardDirectory = Environment.getExternalStorageDirectory();
@@ -284,6 +258,52 @@ public class OcrDemo extends Activity {
         return result;
     }
 
+    public Bitmap drawTextToBitmap(Bitmap bitmap, Context gContext, Map<Point, Double> map) {
+        Resources resources = gContext.getResources();
+        float scale = resources.getDisplayMetrics().density;
+
+
+        android.graphics.Bitmap.Config bitmapConfig =
+                bitmap.getConfig();
+        // set default bitmap config if none
+        if(bitmapConfig == null) {
+            bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
+        }
+        // resource bitmaps are imutable,
+        // so we need to convert it to mutable one
+        bitmap = bitmap.copy(bitmapConfig, true);
+
+        Canvas canvas = new Canvas(bitmap);
+        // new antialised Paint
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        // text color - #3D3D3D
+        paint.setColor(Color.rgb(61, 61, 61));
+        // text size in pixels
+        paint.setTextSize((int) (34 * scale));
+        // text shadow
+        paint.setShadowLayer(1f, 0f, 1f, Color.WHITE);
+
+        // draw text to the Canvas center
+        Rect bounds = new Rect();
+        //paint.getTextBounds(gText, 0, gText.length(), bounds);
+        for (Point p: map.keySet()){
+            canvas.drawText(Double.toString(map.get(p)),p.x, p.y, paint);
+
+        }
+
+
+        return bitmap;
+    }
+    public static Bitmap rotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+
+        matrix.postRotate(90);
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(source,source.getWidth()/2,source.getHeight()/2,true);
+
+        return  Bitmap.createBitmap(scaledBitmap , 0, 0, scaledBitmap .getWidth(), scaledBitmap .getHeight(), matrix, true);
+    }
 
 
 

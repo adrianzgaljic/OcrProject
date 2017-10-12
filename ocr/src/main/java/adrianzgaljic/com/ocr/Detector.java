@@ -3,6 +3,7 @@ package adrianzgaljic.com.ocr;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.os.Environment;
 import android.util.Log;
 
 
@@ -17,6 +18,10 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -123,6 +128,9 @@ class Detector {
             Core.flip(matContours.t(), matContours, 1);
             //Core.flip(mat.t(), mat, 1);
         }
+
+        storeImage(matToBitmap(matContours), "ime2");
+
 
 
         double maxcntr = 0;
@@ -339,13 +347,13 @@ class Detector {
         Mat tmp = new Mat(mat.height(), mat.width(), CvType.CV_8U, new Scalar(4));
         try {
             //Imgproc.cvtColor(seedsImage, tmp, Imgproc.COLOR_RGB2BGRA);
-            Imgproc.cvtColor(mat, tmp, Imgproc.COLOR_GRAY2RGBA, 4);
+            //Imgproc.cvtColor(mat, tmp, Imgproc.COLOR_GRAY2RGBA, 4);
             bmp = Bitmap.createBitmap(tmp.cols(), tmp.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(tmp, bmp);
-            //Log.d("tag","bitmap ok");
+            Log.d("tag","bitmap ok");
         } catch (Exception e) {
             e.printStackTrace();
-            //Log.d("Exception",e.getMessage());}
+            Log.d("Exception",e.getMessage());
             //Log.d("tag","bitmap ok" + bmp);
 
         }
@@ -480,6 +488,39 @@ class Detector {
 
 
         return result;
+    }
+
+    public static void storeImage(Bitmap bitmap, String name){
+        File sdCardDirectory = Environment.getExternalStorageDirectory();
+        File image = new File(sdCardDirectory+"/slike", name+".png");
+        Log.d("tag"," sdcard= "+sdCardDirectory);
+
+        boolean success = false;
+
+        FileOutputStream outStream;
+        try {
+
+            outStream = new FileOutputStream(image);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+        /* 100 to keep full quality of the image */
+
+            outStream.flush();
+            outStream.close();
+            success = true;
+        } catch (FileNotFoundException e) {
+            Log.d("tag","spremio sliku nisam "+e.toString());
+
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.d("tag","spremio sliku nisam "+e.toString());
+
+            e.printStackTrace();
+        }
+
+        Log.d("tag","spremio sliku "+name);
+
+
+
     }
 
 
