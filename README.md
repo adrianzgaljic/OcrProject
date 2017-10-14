@@ -58,9 +58,16 @@ While getNumbers() method will turn this result to:
 
 ## Examples
 
+* Number recognition
+
+![Logo](number_recognitio_small.png)
+
+
 * Character recognition
 
-![Logo](character_recognition.png)
+Library is upgraded to recognize characters but with with reduced accuracy due to lack of training samples.
+
+![Logo](character_recognition_small.png)
 
 
 
