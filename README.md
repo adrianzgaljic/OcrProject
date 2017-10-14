@@ -48,7 +48,7 @@ While getNumbers() method will turn this result to:
 
 
 
-![Logo](character_recognition.png)
+![Logo](character_recognition_small.png)
 
 
 
