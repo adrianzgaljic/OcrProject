@@ -45,9 +45,16 @@ Initially it was built to recognize numbers but later upgraded to recognize lett
   Map<Point, Double> numbersResult = Detector.getNumbers(result);
 ```
 
-If you are trying to recognize Eg. number 2.345, detect() method will return:
+If you are trying to recognize Eg. number 0.9375, detect() method will return:
+```java
+{Point(1741, 1756)=7, Point(1854, 1762)=5, Point(1320, 1740)=0, Point(1370, 1743)=., Point(1617, 1751)=3, Point(1505, 1748)=9}
+```
 
 While getNumbers() method will turn this result to:
+```java
+ {Point(1320, 1740)=0.9375}
+```
+
 
 ## Examples
 
