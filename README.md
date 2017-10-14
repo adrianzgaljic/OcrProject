@@ -1,11 +1,11 @@
-OcrProject
+# OcrProject
 
 This is Android library for recognition of typed characters. 
 Initially it was built to recognize numbers but later upgraded to recognize letters of the English alphabet.
 
-Usage
+## Usage
 
-Initialization
+* Initialization
 ```java
     /**
      * @param context application context
@@ -15,7 +15,7 @@ Initialization
 
 ```
 
-Setting aditional parameters
+* Setting aditional parameters
 ```java
    
    /**
@@ -30,14 +30,14 @@ Setting aditional parameters
    Detector.setCertainty(40);
 ```
 
-Detecting characters
+* Detecting characters
 ```java
    Map<Point, String> result = Detector.detect(bitmapImage);
 ```
 
 Detection input is bitmap image and result is map of detected characters and their postions in image.
 
-If you want to detect numbers use line below to parse result to double values.
+* If you want to detect numbers use line below to parse result to double values.
 ```java
   Map<Point, Double> numbersResult = Detector.getNumbers(result);
 ```
@@ -46,7 +46,9 @@ If you are trying to recognize Eg. number 2.345, detect() method will return:
 
 While getNumbers() method will turn this result to:
 
+## Examples
 
+* Character recognition
 
 ![Logo](character_recognition.png)
 
