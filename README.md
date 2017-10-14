@@ -5,7 +5,7 @@ Initially it was built to recognize numbers but later upgraded to recognize lett
 
 ## Usage
 
-* Initialization
+* **Initialization**
 ```java
     /**
      * @param context application context
@@ -15,7 +15,7 @@ Initially it was built to recognize numbers but later upgraded to recognize lett
 
 ```
 
-* Setting aditional parameters
+* **Setting aditional parameters**
 ```java
    
    /**
@@ -30,14 +30,17 @@ Initially it was built to recognize numbers but later upgraded to recognize lett
    Detector.setCertainty(40);
 ```
 
-* Detecting characters
+* **Detecting characters**
 ```java
+    /*
+    * detection input is bitmap image and result is map of detected characters 
+    * and their postions in image.
+    */
    Map<Point, String> result = Detector.detect(bitmapImage);
 ```
 
-Detection input is bitmap image and result is map of detected characters and their postions in image.
 
-* If you want to detect numbers use line below to parse result to double values.
+* **If you want to detect numbers use line below to parse result to double values**
 ```java
   Map<Point, Double> numbersResult = Detector.getNumbers(result);
 ```
