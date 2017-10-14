@@ -1,4 +1,10 @@
-# OcrProject
+
+<p align="center">
+ OcrProject
+</p>
+
+[![forthebadge](http://forthebadge.com/images/badges/built-for-android.svg)](http://forthebadge.com)
+<br>
 
 This is Android library for recognition of typed characters. 
 Initially it was built to recognize numbers but later upgraded to recognize letters of the English alphabet.
