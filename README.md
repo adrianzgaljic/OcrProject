@@ -1,7 +1,5 @@
 
-<p align="center">
- OcrProject
-</p>
+# OcrProject
 
 [![forthebadge](http://forthebadge.com/images/badges/built-for-android.svg)](http://forthebadge.com)
 <br>
@@ -51,18 +49,19 @@ Initially it was built to recognize numbers but later upgraded to recognize lett
   Map<Point, Double> numbersResult = Detector.getNumbers(result);
 ```
 
-If you are trying to recognize Eg. number 0.9375, detect() method will return:
+When trying to recognize numbers, eg. 0.9375, detect() method will return:
 ```java
 {Point(1741, 1756)=7, Point(1854, 1762)=5, Point(1320, 1740)=0, Point(1370, 1743)=., Point(1617, 1751)=3, Point(1505, 1748)=9}
 ```
 
-While getNumbers() method will turn this result to:
+while getNumbers() method will parse this result to:
 ```java
  {Point(1320, 1740)=0.9375}
 ```
 
 
 ## Examples
+
 
 * Number recognition
 
@@ -78,11 +77,20 @@ Library is upgraded to recognize characters but with with reduced accuracy due t
 
 
 
-Download
---------
+## Download
+
 
 ```groovy
 dependencies {
    compile 'com.adrianzgaljic.ocr:ocr:0.9.0'
 }
 ```
+
+
+
+## Build with
+
+- [Tensorflow](https://www.tensorflow.org/) -  library for numerical computation using data flow graphs, used for building neural network for character recognition
+- [Python 3.0](https://www.python.org/) - used for buiding neural network training scripts with Python TensorFlow API
+- [Java 8](https://developer.android.com/guide/platform/j8-jack.html) - used for making Android library and Demo application
+
