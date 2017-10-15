@@ -66,7 +66,7 @@ while getNumbers() method will parse this result to:
 
 * Number recognition
 
-![Logo](number_recognitio_small.png)
+![Logo](number_recognition.png)
 
 
 * Character recognition
