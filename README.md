@@ -1,7 +1,8 @@
 
 # OcrProject
 
-[![forthebadge](http://forthebadge.com/images/badges/built-for-android.svg)](http://forthebadge.com)
+![Current Version](https://img.shields.io/badge/version-0.9.0-green.svg)
+![Platform](https://img.shields.io/badge/platform-Android-brightgreen.svg)
 <br>
 
 This is Android library for recognition of typed characters. 
@@ -93,4 +94,7 @@ dependencies {
 - [Tensorflow](https://www.tensorflow.org/) -  library for numerical computation using data flow graphs, used for building neural network for character recognition
 - [Python 3.0](https://www.python.org/) - used for buiding neural network training scripts with Python TensorFlow API
 - [Java 8](https://developer.android.com/guide/platform/j8-jack.html) - used for making Android library and Demo application
+
+
+
 
