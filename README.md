@@ -96,5 +96,13 @@ dependencies {
 - [Java 8](https://developer.android.com/guide/platform/j8-jack.html) - used for making Android library and Demo application
 
 
+<p align="center">
+ <img src="https://github.com/adrianzgaljic/OcrProject/edit/master/pp.png?dl=0" alt="SDVersion"/>
+    Developed by Adrian Žgaljić
+    for Master's degree
+    at Faculty of Electrical Engineering and Computing Zagreb
+</p>
+
+<a href="http://www.amitmerchant.com/electron-markdownify"><img src="https://github.com/adrianzgaljic/OcrProject/edit/master/pp.png" alt="Markdownify" width="200"></a>
 
 
