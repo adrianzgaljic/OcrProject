@@ -95,12 +95,15 @@ dependencies {
 - [Python 3.0](https://www.python.org/) - used for buiding neural network training scripts with Python TensorFlow API
 - [Java 8](https://developer.android.com/guide/platform/j8-jack.html) - used for making Android library and Demo application
 
-
+<br>
 <p align="center">
- <img src="https://github.com/adrianzgaljic/OcrProject/blob/master/pp.png"/>
-    Developed by Adrian Žgaljić
+ <img src="https://github.com/adrianzgaljic/OcrProject/blob/master/pp_small.png" />
+    <br>
+    Developed by <strong> Adrian Žgaljić </strong>
+    <br>
     for Master's degree
-    at Faculty of Electrical Engineering and Computing Zagreb
+    <br>
+    at <strong> Faculty of Electrical Engineering and Computing Zagreb </strong>
 </p>
 
 
