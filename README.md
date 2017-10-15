@@ -1,8 +1,11 @@
 
+<br>
+
 <p align="center">
  <img src="https://github.com/adrianzgaljic/OcrProject/blob/master/logo_small.png" />
-   </p>
+</p>
 
+<br>
 ![Current Version](https://img.shields.io/badge/version-0.9.0-green.svg)
 ![Platform](https://img.shields.io/badge/platform-Android-brightgreen.svg)
 <br>
